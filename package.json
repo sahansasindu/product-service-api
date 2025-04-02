@@ -1,0 +1,15 @@
+{
+  "name": "product-service-api",
+  "version": "1.0.0",
+  "description": "product service api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sahan sasindu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.13.1"
+  }
+}
