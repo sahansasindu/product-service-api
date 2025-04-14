@@ -1,20 +1,19 @@
-const express=require('express');
-const mongoose=require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
+const app = express();
+const serverPort = process.env.SERVER_PORT || 3000;
 
-const app=express();
-const serverPort=process.env.SERVER_PORT|3000;
-
-try{
-    mongoose.connect('mongodb://127.0.0.1:27017/cpdp_db')
-        app.listen(serverPort,()=>{
-            console.log(`server up & running on port ${serverPort}`)
-        })
-}catch (e){
+try {
+    mongoose.connect(`${process.env.DATABASE_URL}:${process.env.DB_PORT}/${process.env.DB_NAME}`);
+    app.listen(serverPort, () => {
+        console.log(`server up & running on port ${serverPort}`);
+    });
+} catch (e) {
     console.log(e);
 }
 
-app.get('/test-api',(req, resp)=>{
-    return resp.json({'message':'hi the server is Workin'})
+app.get('/test-api', (req, resp) => {
+    return resp.json({ message: 'hi the server is Workin' });
 });
