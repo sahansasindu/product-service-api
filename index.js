@@ -1,13 +1,15 @@
 const express=require('express');
 const mongoose=require('mongoose');
+require('dotenv').config();
 
 
 const app=express();
+const serverPort=process.env.SERVER_PORT|3000;
 
 try{
     mongoose.connect('mongodb://127.0.0.1:27017/cpdp_db')
-        app.listen(3000,()=>{
-            console.log('server up & running on port 3000')
+        app.listen(serverPort,()=>{
+            console.log(`server up & running on port ${serverPort}`)
         })
 }catch (e){
     console.log(e);
