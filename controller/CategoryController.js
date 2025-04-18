@@ -67,7 +67,23 @@ const updateCategory =async (request,response)=>{
 
 }
 const deleteCategory =async (request,response)=>{
-    console.log(request.body);
+    try{
+
+        if(!request.params.id){
+            return response.status(400).json({
+                code:400,
+                message:'some field are missing!....',
+                data:null
+            });
+        }
+        const deletedData=await CategorySchema.findOneAndDelete(
+            {'_id':request.params.id});
+
+        return response.status(204).json({code:204,message:'customer has been deleted..',data:deletedData})
+
+    }catch (err){
+        response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
+    }
 }
 const findCategoryById =async (request,response)=>{
     console.log(request.body);
