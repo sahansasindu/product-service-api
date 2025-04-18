@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const CategorySchma=new mongoose.Schema({
+const CategorySchema=new mongoose.Schema({
     categoryName:{
         type:String,
         required:true
@@ -11,4 +11,4 @@ const CategorySchma=new mongoose.Schema({
         type:Array
     }
 });
-module.exports=mongoose.model('category',CategorySchma);
+module.exports=mongoose.model('category',CategorySchema);
