@@ -11,4 +11,4 @@ const CountrySchema=new mongoose.Schema({
         type:Array
     }
 });
-module.exports=mongoose.model('countries',CategorySchema);
+module.exports=mongoose.model('countries',CountrySchema);
