@@ -41,7 +41,30 @@ const createCategory =async (request,response)=>{
 
 }
 const updateCategory =async (request,response)=>{
-    console.log(request.body);
+
+    try{
+
+        const { categoryName} = request.body;
+
+        if(!categoryName){
+            return response.status(400).json({
+                code:400,
+                message:'some field are missing!....',
+                data:null
+            });
+        }
+        const updateData=await CategorySchema.findOneAndUpdate(
+            {'_id':request.params.id},
+            {$set:{categoryName: categoryName}},
+            {new:true});
+
+        return response.status(200).json({code:200,message:'customer has been updated..',data:updateData})
+
+    }catch (err){
+        response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
+    }
+
+
 }
 const deleteCategory =async (request,response)=>{
     console.log(request.body);
