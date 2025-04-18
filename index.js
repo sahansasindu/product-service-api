@@ -6,6 +6,7 @@ const {urlencoded} = require("express");
 const app = express();
 const serverPort = process.env.SERVER_PORT || 3000;
 const CategoryRoute=require('./route/CategoryRoute');
+const Countries=require('./route/CountryRoute')
 
 
 //app.use(express.json());
@@ -30,3 +31,4 @@ app.get('/test-api', (req, resp) => {
 
 
 app.use('/api/v1/categories', CategoryRoute);
+app.use('/api/v1/countries', CategoryRoute);
