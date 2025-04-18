@@ -109,7 +109,33 @@ const findCategoryById =async (request,response)=>{
     }
 }
 const findAllCategory =async (request,response)=>{
-    console.log(request.body);
+
+    try{
+
+        const {seachText,page=1,size=10}=request.query;
+        const pageIndex=parseInt(page);
+        const pageSize=parseInt(size);
+
+        const query={};
+        if(seachText){
+            query.$text={$search:seachText}
+        }
+        const skip=(pageIndex-1)*pageSize;
+        const categoryList=await CategorySchema.find(query)
+            .limit(pageSize)
+            .skip(skip);
+        const categoryListCount=await CategorySchema.countDocuments();
+        return response.status(200).json({code:200,message:'category data..',data:{list:categoryList,categoryListCount}})
+
+
+    }catch (err){
+        response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
+
+    }
+
+
+
+
 }
 
 module.exports={
