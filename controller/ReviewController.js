@@ -25,9 +25,6 @@ const createReview =async (request,response)=>{
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
-
-
-
 }
 const updateReview =async (request,response)=>{
 
@@ -121,12 +118,9 @@ const findAllReview =async (request,response)=>{
 
     }
 
-
-
-
 }
 
 module.exports={
 
-    createReview,updateReview,deleteReview,findAllReview,findAllReview
+    createReview,updateReview,deleteReview,findAllReview,findReviewById
 }
