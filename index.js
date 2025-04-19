@@ -6,8 +6,9 @@ const {urlencoded} = require("express");
 const app = express();
 const serverPort = process.env.SERVER_PORT || 3000;
 const CategoryRoute=require('./route/CategoryRoute');
-const CountriesRoute=require('./route/CountryRoute')
-const DiscountRoute=require('./route/DiscountRoute')
+const CountriesRoute=require('./route/CountryRoute');
+const DiscountRoute=require('./route/DiscountRoute');
+const ProductRoute=require('./route/ProductRoute');
 
 
 //app.use(express.json());
@@ -33,3 +34,4 @@ app.get('/test-api', (req, resp) => {
 app.use('/api/v1/categories', CategoryRoute);
 app.use('/api/v1/countries', CountriesRoute);
 app.use('/api/v1/discount', DiscountRoute);
+app.use('/api/v1/product', ProductRoute);
