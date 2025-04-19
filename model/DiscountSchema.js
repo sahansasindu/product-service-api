@@ -17,4 +17,4 @@ const DiscountSchema=new mongoose.Schema({
         type:Date
     }
 });
-module.exports=mongoose.model('countries',CountrySchema);
+module.exports=mongoose.model('discount',DiscountSchema);
