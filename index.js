@@ -9,12 +9,12 @@ const CategoryRoute=require('./route/CategoryRoute');
 const CountriesRoute=require('./route/CountryRoute');
 const DiscountRoute=require('./route/DiscountRoute');
 const ProductRoute=require('./route/ProductRoute');
+const CartRoute=require('./route/CartRoute');
 
 
 //app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-
 
 
 
@@ -35,4 +35,4 @@ app.use('/api/v1/categories', CategoryRoute);
 app.use('/api/v1/countries', CountriesRoute);
 app.use('/api/v1/discount', DiscountRoute);
 app.use('/api/v1/product', ProductRoute);
- 
+app.use('/api/v1/cart', CartRoute);

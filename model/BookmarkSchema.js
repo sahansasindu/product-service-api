@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const CartSchema=new mongoose.Schema({
+const BookmarkSchema=new mongoose.Schema({
     userId:{
         type:String,
         required:true
@@ -7,9 +7,7 @@ const CartSchema=new mongoose.Schema({
     productId :{
         type:Object
     },
-    qty:{
-        type:Number
-    },
+
     createDate:{
         type:Date
     },
