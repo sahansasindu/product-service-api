@@ -13,4 +13,4 @@ const BookmarkSchema=new mongoose.Schema({
     },
 
 });
-module.exports=mongoose.model('cart',CartSchema);
+module.exports=mongoose.model('bookmark',BookmarkSchema);
