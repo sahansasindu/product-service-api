@@ -90,7 +90,7 @@ const findCountryById =async (request,response)=>{
         }
         const countryData=await CountrySchema.findById(
             {'_id':request.params.id});
-        if(categoryData){
+        if(countryData){
             return response.status(200).json({code:200,message:'country data..',data:countryData})
         }
 
