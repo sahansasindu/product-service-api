@@ -13,7 +13,7 @@ const createBookmark =async (request,response)=>{
             productId:productId,
             createDate:createDate
         });
-        const saveData=await cart.save();
+        const saveData=await bookmark.save();
         console.log(saveData);
         return response.status(201).json({code:201,message:'bookmark has been saved..',data:saveData})
 
@@ -29,18 +29,14 @@ const updateBookmark =async (request,response)=>{
 
     try{
 
-        const {userId, productId,createDate} = request.body;
-        if(!userId || !productId || !createDate){
-            return response.status(400).json({code:400,message:'some field are missing!....',data:null})
-        }
         const updateData=await BookmarkSchema.findOneAndUpdate(
             {'_id':request.params.id},
-            {$set: {
-                    userId:userId,
-                    productId:productId,
-                    createDate:createDate
-                }},
+            {$set: request.body},
             {new:true});
+
+        if(!updateData){
+            return response.status(404).json({code:404,message:'bookmark not found..',data:null})
+        }
 
         return response.status(200).json({code:200,message:'bookmark has been updated..',data:updateData})
 
@@ -63,7 +59,11 @@ const deleteBookmark =async (request,response)=>{
         const deletedData=await BookmarkSchema.findOneAndDelete(
             {'_id':request.params.id});
 
-        return response.status(204).json({code:204,message:'Bookmark has been deleted..',data:deletedData})
+        if (deletedData) {
+            return response.status(200).json({code:200,message:'bookmark has been deleted successfully',data:deletedData})
+        } else {
+            return response.status(404).json({code:404,message:'bookmark not found',data:null})
+        }
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
