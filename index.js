@@ -2,21 +2,19 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Eureka = require('eureka-js-client').Eureka;
 require('dotenv').config();
-const bodyParser=require('body-parser');
- 
+const bodyParser = require('body-parser');
+
 const app = express();
-
-
 
 //Route
 const serverPort = process.env.SERVER_PORT || 3000;
-const CategoryRoute=require('./route/CategoryRoute');
-const CountriesRoute=require('./route/CountryRoute');
-const DiscountRoute=require('./route/DiscountRoute');
-const ProductRoute=require('./route/ProductRoute');
-const CartRoute=require('./route/CartRoute');
-const BookmarkRoute=require('./route/BookmarkRoute');
-const ReviewRoute=require('./route/ReviewRoute');
+const CategoryRoute = require('./route/CategoryRoute');
+const CountriesRoute = require('./route/CountryRoute');
+const DiscountRoute = require('./route/DiscountRoute');
+const ProductRoute = require('./route/ProductRoute');
+const CartRoute = require('./route/CartRoute');
+const BookmarkRoute = require('./route/BookmarkRoute');
+const ReviewRoute = require('./route/ReviewRoute');
 
 
 /*===============================*/
@@ -42,19 +40,15 @@ const eurekaClient = new Eureka({
         servicePath: '/eureka/apps/'
     }
 });
-eurekaClient.start(function (error){
+eurekaClient.start(function (error) {
     console.log(error || 'eureka registration is complete!')
 })
 /*===============================*/
 
 
-
-
-
 //app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-
 
 
 try {
