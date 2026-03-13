@@ -19,7 +19,7 @@ const createReview =async (request,response)=>{
         });
         const saveData=await review.save();
         console.log(saveData);
-        return response.status(201).json({code:201,message:'bookmark has been saved..',data:saveData})
+        return response.status(201).json({code:201,message:'review has been saved..',data:saveData})
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
@@ -27,25 +27,15 @@ const createReview =async (request,response)=>{
 
 }
 const updateReview =async (request,response)=>{
-
     try{
-
-        const { orderId,message,createdDate,userId,displayName,productId,rating} = request.body;
-        if(!orderId || !message || !createdDate || !userId || !displayName || ! productId || !rating){
-            return response.status(400).json({code:400,message:'some field are missing!....',data:null})
-        }
         const updateData=await ReviewSchema.findOneAndUpdate(
             {'_id':request.params.id},
-            {$set: {
-                    orderId:orderId,
-                    message:message,
-                    createdDate:createdDate,
-                    userId:userId,
-                    displayName:displayName,
-                    productId:productId,
-                    rating:rating
-                }},
+            {$set: request.body},
             {new:true});
+
+        if(!updateData){
+            return response.status(404).json({code:404,message:'review not found..',data:null})
+        }
 
         return response.status(200).json({code:200,message:'review has been updated..',data:updateData})
 
@@ -68,7 +58,11 @@ const deleteReview =async (request,response)=>{
         const deletedData=await ReviewSchema.findOneAndDelete(
             {'_id':request.params.id});
 
-        return response.status(204).json({code:204,message:'review has been deleted..',data:deletedData})
+        if(deletedData){
+            return response.status(200).json({code:200,message:'review has been deleted successfully',data:deletedData})
+        }else{
+            return response.status(404).json({code:404,message:'review not found',data:null})
+        }
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
@@ -90,7 +84,7 @@ const findReviewById =async (request,response)=>{
             return response.status(200).json({code:200,message:'review data..',data:reviewData})
         }
 
-        response.status(404).json({ code: 404, message: 'review data not found...', error: err.message });
+        response.status(404).json({ code: 404, message: 'review data not found...', data: null });
 
 
     }catch (err){
@@ -110,7 +104,7 @@ const findAllReview =async (request,response)=>{
             .limit(pageSize)
             .skip(skip);
         const reviewListCount=await ReviewSchema.countDocuments();
-        return response.status(200).json({code:200,message:'bookmark data..',data:{list:reviewList,reviewListCount}})
+        return response.status(200).json({code:200,message:'review data..',data:{list:reviewList,reviewListCount}})
 
 
     }catch (err){
