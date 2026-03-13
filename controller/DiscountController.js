@@ -79,7 +79,11 @@ const deleteDiscount =async (request,response)=>{
         const deletedData=await DiscountSchema.findOneAndDelete(
             {'_id':request.params.id});
 
-        return response.status(204).json({code:204,message:'discount has been deleted..',data:deletedData})
+        if(deletedData){
+            return response.status(200).json({code:200,message:'discount has been deleted successfully',data:deletedData})
+        }else{
+            return response.status(404).json({code:404,message:'discount not found',data:null})
+        }
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
