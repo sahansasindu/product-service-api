@@ -31,19 +31,14 @@ const updateCart =async (request,response)=>{
 
     try{
 
-        const {userId, productId,qty,createDate} = request.body;
-        if(!userId || !productId || !qty || !createDate){
-            return response.status(400).json({code:400,message:'some field are missing!....',data:null})
-        }
-        const updateData=await DiscountSchema.findOneAndUpdate(
+        const updateData=await CartSchema.findOneAndUpdate(
             {'_id':request.params.id},
-            {$set: {
-                    userId:userId,
-                    productId:productId,
-                    qty:qty,
-                    createDate:createDate
-                }},
+            {$set: request.body},
             {new:true});
+
+        if(!updateData){
+            return response.status(404).json({code:404,message:'cart not found..',data:null})
+        }
 
         return response.status(200).json({code:200,message:'cart has been updated..',data:updateData})
 
@@ -66,7 +61,11 @@ const deleteCart =async (request,response)=>{
         const deletedData=await CartSchema.findOneAndDelete(
             {'_id':request.params.id});
 
-        return response.status(204).json({code:204,message:'cart has been deleted..',data:deletedData})
+        if(deletedData){
+            return response.status(200).json({code:200,message:'cart has been deleted successfully',data:deletedData})
+        }else{
+            return response.status(404).json({code:404,message:'cart not found',data:null})
+        }
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
@@ -108,7 +107,7 @@ const findAllCart =async (request,response)=>{
             .limit(pageSize)
             .skip(skip);
         const cartListCount=await CartSchema.countDocuments();
-        return response.status(200).json({code:200,message:'discount data..',data:{list:discountList,discountListCount}})
+        return response.status(200).json({code:200,message:'cart data..',data:{list:cartList,cartListCount}})
 
 
     }catch (err){
