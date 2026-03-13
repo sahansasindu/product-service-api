@@ -65,7 +65,11 @@ const deleteCategory =async (request,response)=>{
         const deletedData=await CategorySchema.findOneAndDelete(
             {'_id':request.params.id});
 
-        return response.status(204).json({code:204,message:'category has been deleted..',data:deletedData})
+        if(deletedData){
+            return response.status(200).json({code:200,message:'category has been deleted successfully',data:deletedData})
+        }else{
+            return response.status(404).json({code:404,message:'category not found',data:null})
+        }
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
