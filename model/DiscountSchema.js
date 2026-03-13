@@ -5,7 +5,12 @@ const DiscountSchema=new mongoose.Schema({
         required:true
     },
     percentage :{
-        type:Number
+        type:Number,
+        required:true
+    },
+    active:{
+        type:Boolean,
+        default:true
     },
     startDate:{
         type:Date

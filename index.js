@@ -1,9 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const Eureka = require('eureka-js-client').Eureka;
 require('dotenv').config();
 const bodyParser=require('body-parser');
-const {urlencoded} = require("express");
+ 
 const app = express();
+
+
+
+//Route
 const serverPort = process.env.SERVER_PORT || 3000;
 const CategoryRoute=require('./route/CategoryRoute');
 const CountriesRoute=require('./route/CountryRoute');
@@ -12,6 +17,38 @@ const ProductRoute=require('./route/ProductRoute');
 const CartRoute=require('./route/CartRoute');
 const BookmarkRoute=require('./route/BookmarkRoute');
 const ReviewRoute=require('./route/ReviewRoute');
+
+
+/*===============================*/
+const eurekaClient = new Eureka({
+    instance: {
+        app: 'product-service-api',
+        instanceId: `product-service-api:${serverPort}`,
+        hostName: 'localhost',
+        ipAddr: '127.0.0.1',
+        port: {
+            '$': parseInt(serverPort),
+            '@enabled': true
+        },
+        vipAddress: 'product-service-api',
+        dataCenterInfo: {
+            '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+            name: 'MyOwn'
+        }
+    },
+    eureka: {
+        host: '127.0.0.1',
+        port: 8761,
+        servicePath: '/eureka/apps/'
+    }
+});
+eurekaClient.start(function (error){
+    console.log(error || 'eureka registration is complete!')
+})
+/*===============================*/
+
+
+
 
 
 //app.use(express.json());
@@ -33,10 +70,10 @@ app.get('/test-api', (req, resp) => {
     return resp.json({ message: 'hi the server is Workin' });
 });
 
-app.use('/api/v1/categories', CategoryRoute);
-app.use('/api/v1/countries', CountriesRoute);
-app.use('/api/v1/discount', DiscountRoute);
-app.use('/api/v1/product', ProductRoute);
-app.use('/api/v1/cart', CartRoute);
-app.use('/api/v1/boomark', BookmarkRoute);
-app.use('/api/v1/review', ReviewRoute);
+app.use('/product-service-api/api/v1/categories', CategoryRoute);
+app.use('/product-service-api/api/v1/countries', CountriesRoute);
+app.use('/product-service-api/api/v1/discount', DiscountRoute);
+app.use('/product-service-api/api/v1/product', ProductRoute);
+app.use('/product-service-api/api/v1/cart', CartRoute);
+app.use('/product-service-api/api/v1/boomark', BookmarkRoute);
+app.use('/product-service-api/api/v1/review', ReviewRoute);

@@ -3,30 +3,26 @@ const createProduct =async (request,response)=>{
 
     try{
 
-        const {  productName,   images,  actiualPrice, oldPrice,  qty,  description,    discount,   categoryId } = request.body;
-        if( !productName || !images ||  !actiualPrice || !oldPrice ||  !qty ||  !description || !discount || !categoryId){
-            return response.status(400).json({code:400,message:'some field are missing!....',data:null})
+        const { productName, images, actualPrice, actiualPrice, oldPrice, qty, description, discount, categoryId } = request.body;
+        const finalPrice = actualPrice || actiualPrice;
+
+        if (!productName || !images || !finalPrice || !oldPrice || !qty || !description || !discount || !categoryId) {
+            return response.status(400).json({ code: 400, message: 'some field are missing!....', data: null });
         }
 
-        const category=new ProductSchema({
-            productName:productName,
-            image:{
-                hash:'Temp Hash',
-                resourceUrl:'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.dogster.com%2Fdog-breeds%2Fsiberian-husky&psig=AOvVaw3OsoJffBOD68J582Yo3wjO&ust=1745048997121000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCJC4k6KM4YwDFQAAAAAdAAAAABAE',
-                fileName:'Temp FIle name ',
-                directory:'Temp directory '
-            },
-            actiualPrice:actiualPrice,
-            oldPrice:oldPrice,
-            qty:qty,
-            description:description,
-            discount:discount,
-            categoryId:categoryId
-
+        const product = new ProductSchema({
+            productName: productName,
+            images: images,
+            actualPrice: finalPrice,
+            oldPrice: oldPrice,
+            qty: qty,
+            description: description,
+            discount: discount,
+            categoryId: categoryId
         });
-        const saveData=await category.save();
+        const saveData = await product.save();
         console.log(saveData);
-        return response.status(201).json({code:201,message:'product has been saved..',data:saveData})
+        return response.status(201).json({ code: 201, message: 'product has been saved..', data: saveData });
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
@@ -40,25 +36,32 @@ const createProduct =async (request,response)=>{
 const updateProduct =async (request,response)=>{
 
     try{
-        const {  productName,actiualPrice, oldPrice,  qty,  description,    discount,   categoryId } = request.body;
-        if( !productName || !actiualPrice || !oldPrice ||  !qty ||  !description || !discount || !categoryId){
-            return response.status(400).json({code:400,message:'some field are missing!....',data:null})
+        const { productName, images, actualPrice, actiualPrice, oldPrice, qty, description, discount, categoryId } = request.body;
+        
+        const updateFields = {};
+        if (productName) updateFields.productName = productName;
+        if (images) updateFields.images = images;
+        if (actualPrice || actiualPrice) updateFields.actualPrice = actualPrice || actiualPrice;
+        if (oldPrice) updateFields.oldPrice = oldPrice;
+        if (qty !== undefined) updateFields.qty = qty;
+        if (description) updateFields.description = description;
+        if (discount) updateFields.discount = discount;
+        if (categoryId) updateFields.categoryId = categoryId;
+
+        if (Object.keys(updateFields).length === 0) {
+            return response.status(400).json({ code: 400, message: 'No fields provided for update!....', data: null });
         }
 
-        const updateData=await ProductSchema.findOneAndUpdate(
-            {'_id':request.params.id},
-            {$set:{
-                    productName:productName,
-                    actiualPrice:actiualPrice,
-                    oldPrice:oldPrice,
-                    qty:qty,
-                    description:description,
-                    discount:discount,
-                    categoryId:categoryId
-            }},
-            {new:true});
+        const updateData = await ProductSchema.findOneAndUpdate(
+            { '_id': request.params.id },
+            { $set: updateFields },
+            { new: true });
 
-        return response.status(200).json({code:200,message:'product has been updated..',data:updateData})
+        if (!updateData) {
+            return response.status(404).json({ code: 404, message: 'Product not found...', data: null });
+        }
+
+        return response.status(200).json({ code: 200, message: 'product has been updated..', data: updateData });
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
@@ -95,10 +98,10 @@ const findProductById =async (request,response)=>{
                 data:null
             });
         }
-        const productData=await ProductSchema.findById(
-            {'_id':request.params.id});
-        if(productDataData){
-            return response.status(200).json({code:200,message:'product data..',data:productData})
+        const productData = await ProductSchema.findById(
+            { '_id': request.params.id });
+        if (productData) {
+            return response.status(200).json({ code: 200, message: 'product data..', data: productData });
         }
 
         response.status(404).json({ code: 404, message: 'product data not found...', error: err.message });

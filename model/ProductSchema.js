@@ -7,7 +7,7 @@ const ProductSchema=new mongoose.Schema({
     images :{
         type:Array
     },
-    actiualPrice:{
+    actualPrice:{
         type:Number
     },
     oldPrice:{
@@ -17,7 +17,7 @@ const ProductSchema=new mongoose.Schema({
         type:Number
     },
     description:{
-        type:Number
+        type:String
     },
     discount:{
         type:Object

@@ -3,21 +3,24 @@ const createDiscount =async (request,response)=>{
 
     try{
 
-        const {   discountName,  percentage,   startDate, EndDate,  LastUpdate } = request.body;
-        if(!   discountName || ! percentage || !  startDate || EndDate || EndDate ||  LastUpdate){
-            return response.status(400).json({code:400,message:'some field are missing!....',data:null})
+        const { discountName, discountPercentage, percentage, startDate, EndDate, LastUpdate, active } = request.body;
+        const finalPercentage = percentage || discountPercentage;
+
+        if (!discountName || !finalPercentage) {
+            return response.status(400).json({ code: 400, message: 'discountName and percentage are required!....', data: null });
         }
 
-        const discount=new DiscountSchema({
+        const discount = new DiscountSchema({
             discountName: discountName,
-            percentage: percentage,
-            startDate:  startDate,
+            percentage: finalPercentage,
+            startDate: startDate,
             EndDate: EndDate,
-            LastUpdate:  LastUpdate
+            LastUpdate: LastUpdate,
+            active: active !== undefined ? active : true
         });
-        const saveData=await discount.save();
+        const saveData = await discount.save();
         console.log(saveData);
-        return response.status(201).json({code:201,message:'discount has been saved..',data:saveData})
+        return response.status(201).json({ code: 201, message: 'discount has been saved..', data: saveData });
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
@@ -32,22 +35,30 @@ const updateDiscount =async (request,response)=>{
 
     try{
 
-        const {   discountName,  percentage,   startDate, EndDate,  LastUpdate } = request.body;
-        if(!   discountName || ! percentage || !  startDate || EndDate || EndDate ||  LastUpdate){
-            return response.status(400).json({code:400,message:'some field are missing!....',data:null})
-        }
-        const updateData=await DiscountSchema.findOneAndUpdate(
-            {'_id':request.params.id},
-            {$set: {
-                    discountName: discountName,
-                    percentage: percentage,
-                    startDate:  startDate,
-                    EndDate: EndDate,
-                    LastUpdate:  LastUpdate
-            }},
-            {new:true});
+        const { discountName, discountPercentage, percentage, startDate, EndDate, LastUpdate, active } = request.body;
+        
+        const updateFields = {};
+        if (discountName) updateFields.discountName = discountName;
+        if (percentage || discountPercentage) updateFields.percentage = percentage || discountPercentage;
+        if (startDate) updateFields.startDate = startDate;
+        if (EndDate) updateFields.EndDate = EndDate;
+        if (LastUpdate) updateFields.LastUpdate = LastUpdate;
+        if (active !== undefined) updateFields.active = active;
 
-        return response.status(200).json({code:200,message:'discount has been updated..',data:updateData})
+        if (Object.keys(updateFields).length === 0) {
+            return response.status(400).json({ code: 400, message: 'No fields provided for update!....', data: null });
+        }
+
+        const updateData = await DiscountSchema.findOneAndUpdate(
+            { '_id': request.params.id },
+            { $set: updateFields },
+            { new: true });
+
+        if (!updateData) {
+            return response.status(404).json({ code: 404, message: 'Discount not found...', data: null });
+        }
+
+        return response.status(200).json({ code: 200, message: 'discount has been updated..', data: updateData });
 
     }catch (err){
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
