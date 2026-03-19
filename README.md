@@ -29,6 +29,10 @@ The service uses **MongoDB** as its database.
 - Product reviews and ratings
 - Discount handling
 - Bookmark/favorite products
+- order management.
+- payment gateway.
+- user handle.
+
 
 ## System Architecture
 
