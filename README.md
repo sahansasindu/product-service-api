@@ -54,7 +54,7 @@ Used as a **Service Registry**.
 
 ---
 
-### API Gateway
+### API Gateway (https://github.com/sahansasindu/quickcart_gateway)
 Acts as the **entry point** for all client requests.
 
 - Routes requests to appropriate services
@@ -65,15 +65,17 @@ Acts as the **entry point** for all client requests.
 
 ## Frontend Clients
 
-- **User Client (Angular)** → Used by normal users  
-- **Admin Client (React)** → Used by administrators  
+- **User Client (Angular)** → Used by normal users (https://github.com/sahansasindu/quickcart_client)
+- **Admin Client (React)** → Used by administrators (https://github.com/sahansasindu/Quick-Cart-Admin)
 
 ---
 
 ## API'S
 
-- **User Client (Angular)** → Used by normal users  
-- **Admin Client (React)** → Used by administrators 
+- Order Service API (https://github.com/sahansasindu/order-service-api)
+- User Service APT  (https://github.com/sahansasindu/user-service-api)
+- Product Service API (https://github.com/sahansasindu/product-service-api)
+- Util Service API
 
 ---
 
