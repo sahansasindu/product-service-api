@@ -21,6 +21,15 @@ The service uses **MongoDB** as its database.
 
 ---
 
+## Features
+
+- Product management
+- Category management
+- Shopping cart functionality
+- Product reviews and ratings
+- Discount handling
+- Bookmark/favorite products
+
 ## System Architecture
 
 This project follows a **microservices architecture** with the following core components:
@@ -57,14 +66,10 @@ Acts as the **entry point** for all client requests.
 
 ---
 
-## Features
+## API'S
 
-- Product management
-- Category management
-- Shopping cart functionality
-- Product reviews and ratings
-- Discount handling
-- Bookmark/favorite products
+- **User Client (Angular)** → Used by normal users  
+- **Admin Client (React)** → Used by administrators 
 
 ---
 
