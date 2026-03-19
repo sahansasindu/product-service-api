@@ -38,7 +38,7 @@ The service uses **MongoDB** as its database.
 
 This project follows a **microservices architecture** with the following core components:
 
-### Keycloak
+### Keycloak(https://www.keycloak.org/documentation)
 Used as an **Identity and Access Management (IAM)** solution.
 
 - Handles authentication and authorization
@@ -46,7 +46,7 @@ Used as an **Identity and Access Management (IAM)** solution.
 
 ---
 
-### Eureka Server
+### Eureka Server (https://github.com/sahansasindu/eureka-service-api)
 Used as a **Service Registry**.
 
 - Registers all microservices
