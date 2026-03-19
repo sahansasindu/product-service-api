@@ -68,14 +68,6 @@ Acts as the **entry point** for all client requests.
 
 ---
 
-## Database
 
-- **MongoDB** → Used for storing product-related data
 
----
 
-## Notes
-
-- All APIs follow RESTful standards
-- Authentication is handled via Keycloak
-- Services communicate through the API Gateway
