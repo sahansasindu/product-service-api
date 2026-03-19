@@ -1,4 +1,20 @@
 # Product Service API
+
+## Overview
+
+The **Product Service** is responsible for managing all product-related operations in the system.
+
+It is built using **Express.js** and exposes RESTful APIs for handling:
+- Products
+- Categories
+- Carts
+- Reviews
+- Discounts
+- Bookmarks
+
+The service uses **MongoDB** as its database.
+
+---
 E-Commerce System
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/8cdca14d-77a1-4df4-85a5-5f2f1ffe3e50)
