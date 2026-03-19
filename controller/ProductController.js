@@ -1,47 +1,57 @@
-const ProductSchema=require('../model/ProductSchema');
-const createProduct =async (request,response)=>{
+const ProductSchema = require('../model/ProductSchema');
 
-    try{
+const createProduct = async (request, response) => {
 
-        const { productName, images, actualPrice, actiualPrice, oldPrice, qty, description, discount, categoryId } = request.body;
-        const finalPrice = actualPrice || actiualPrice;
+    try {
+        const { productName, actualPrice, oldPrice, qty, description, discount, categoryId } = request.body;
 
-        if (!productName || !images || !finalPrice || !oldPrice || !qty || !description || !discount || !categoryId) {
-            return response.status(400).json({ code: 400, message: 'some field are missing!....', data: null });
+        if (!productName || !actualPrice || !qty || !description || !categoryId) {
+            return response.status(400).json({ code: 400, message: 'some field are missing!....', data: null })
+        }
+        //  // Validate numeric fields
+        // if (isNaN(actualPrice) || isNaN(oldPrice) || isNaN(qty) || isNaN(discount)) {
+        //     return response.status(400).json({
+        //         code: 400,
+        //         message: 'Price, quantity, and discount must be valid numbers',
+        //         data: null
+        //     });
+        // }
+
+        let imagesArray = [];
+        if (request.files && request.files.length > 0) {
+            imagesArray = request.files.map(file => `/uploads/products/${file.filename}`);
         }
 
         const product = new ProductSchema({
             productName: productName,
-            images: images,
-            actualPrice: finalPrice,
-            oldPrice: oldPrice,
+            images: imagesArray,
+            actualPrice: parseFloat(actualPrice),
+            oldPrice: parseFloat(oldPrice),
             qty: qty,
             description: description,
             discount: discount,
-            categoryId: categoryId
+            categoryId: categoryId,
+            createdAt: new Date(),
+            updatedAt: new Date()
         });
+
         const saveData = await product.save();
         console.log(saveData);
-        return response.status(201).json({ code: 201, message: 'product has been saved..', data: saveData });
+        return response.status(201).json({ code: 201, message: 'product has been saved..', data: saveData })
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
-
-
-
-
 }
-const updateProduct =async (request,response)=>{
+const updateProduct = async (request, response) => {
 
-    try{
-        const { productName, images, actualPrice, actiualPrice, oldPrice, qty, description, discount, categoryId } = request.body;
-        
+    try {
+        const { productName, actualPrice, oldPrice, qty, description, discount, categoryId } = request.body;
+
         const updateFields = {};
         if (productName) updateFields.productName = productName;
-        if (images) updateFields.images = images;
-        if (actualPrice || actiualPrice) updateFields.actualPrice = actualPrice || actiualPrice;
+        if (actualPrice) updateFields.actualPrice = actualPrice;
         if (oldPrice) updateFields.oldPrice = oldPrice;
         if (qty !== undefined) updateFields.qty = qty;
         if (description) updateFields.description = description;
@@ -63,43 +73,43 @@ const updateProduct =async (request,response)=>{
 
         return response.status(200).json({ code: 200, message: 'product has been updated..', data: updateData });
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
 
 }
-const deleteProduct =async (request,response)=>{
-    try{
+const deleteProduct = async (request, response) => {
+    try {
 
-        if(!request.params.id){
+        if (!request.params.id) {
             return response.status(400).json({
-                code:400,
-                message:'some field are missing!....',
-                data:null
+                code: 400,
+                message: 'some field are missing!....',
+                data: null
             });
         }
-        const deletedData=await ProductSchema.findOneAndDelete(
-            {'_id':request.params.id});
+        const deletedData = await ProductSchema.findOneAndDelete(
+            { '_id': request.params.id });
 
-        if(deletedData){
-            return response.status(200).json({code:200,message:'product has been deleted successfully',data:deletedData})
-        }else{
-            return response.status(404).json({code:404,message:'product not found',data:null})
+        if (deletedData) {
+            return response.status(200).json({ code: 200, message: 'product has been deleted successfully', data: deletedData })
+        } else {
+            return response.status(404).json({ code: 404, message: 'product not found', data: null })
         }
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
-const findProductById =async (request,response)=>{
-    try{
+const findProductById = async (request, response) => {
+    try {
 
-        if(!request.params.id){
+        if (!request.params.id) {
             return response.status(400).json({
-                code:400,
-                message:'some field are missing!....',
-                data:null
+                code: 400,
+                message: 'some field are missing!....',
+                data: null
             });
         }
         const productData = await ProductSchema.findById(
@@ -111,31 +121,31 @@ const findProductById =async (request,response)=>{
         response.status(404).json({ code: 404, message: 'product data not found...', error: err.message });
 
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
-const findAllProduct =async (request,response)=>{
+const findAllProduct = async (request, response) => {
 
-    try{
+    try {
 
-        const {seachText,page=1,size=10}=request.query;
-        const pageIndex=parseInt(page);
-        const pageSize=parseInt(size);
+        const { searchText, page = 1, size = 10 } = request.query;
+        const pageIndex = parseInt(page);
+        const pageSize = parseInt(size);
 
-        const query={};
-        if(seachText){
-            query.$text={$search:seachText}
+        const query = {};
+        if (searchText) {
+            query.$text = { $search: searchText }
         }
-        const skip=(pageIndex-1)*pageSize;
-        const productList=await ProductSchema.find(query)
+        const skip = (pageIndex - 1) * pageSize;
+        const productList = await ProductSchema.find(query)
             .limit(pageSize)
             .skip(skip);
-        const productListCount=await ProductSchema.countDocuments();
-        return response.status(200).json({code:200,message:'product data..',data:{list:productList,productListCount}})
+        const productListCount = await ProductSchema.countDocuments();
+        return response.status(200).json({ code: 200, message: 'product data..', data: { list: productList, productListCount } })
 
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
 
     }
@@ -145,6 +155,6 @@ const findAllProduct =async (request,response)=>{
 
 }
 
-module.exports={
-    createProduct,updateProduct,deleteProduct,findAllProduct,findProductById
+module.exports = {
+    createProduct, updateProduct, deleteProduct, findAllProduct, findProductById
 }

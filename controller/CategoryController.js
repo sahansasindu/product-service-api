@@ -102,13 +102,13 @@ const findAllCategory =async (request,response)=>{
 
     try{
 
-        const {seachText,page=1,size=10}=request.query;
+        const {searchText,page=1,size=10}=request.query;
         const pageIndex=parseInt(page);
         const pageSize=parseInt(size);
 
         const query={};
-        if(seachText){
-            query.$text={$search:seachText}
+        if(searchText){
+            query.$text={$search:searchText}
         }
         const skip=(pageIndex-1)*pageSize;
         const categoryList=await CategorySchema.find(query)

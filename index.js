@@ -3,11 +3,19 @@ const mongoose = require('mongoose');
 const Eureka = require('eureka-js-client').Eureka;
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 
+
+//app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+
+
 //Route
 const serverPort = process.env.SERVER_PORT || 3000;
+
 const CategoryRoute = require('./route/CategoryRoute');
 const CountriesRoute = require('./route/CountryRoute');
 const DiscountRoute = require('./route/DiscountRoute');
@@ -46,9 +54,6 @@ eurekaClient.start(function (error) {
 /*===============================*/
 
 
-//app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 
 
 try {
@@ -71,3 +76,7 @@ app.use('/product-service-api/api/v1/product', ProductRoute);
 app.use('/product-service-api/api/v1/cart', CartRoute);
 app.use('/product-service-api/api/v1/boomark', BookmarkRoute);
 app.use('/product-service-api/api/v1/review', ReviewRoute);
+
+
+// Serve uploaded files statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

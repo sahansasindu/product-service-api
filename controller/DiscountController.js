@@ -26,11 +26,8 @@ const createDiscount =async (request,response)=>{
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
-
-
-
-
 }
+
 const updateDiscount =async (request,response)=>{
 
     try{
@@ -89,6 +86,7 @@ const deleteDiscount =async (request,response)=>{
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
+
 const findDiscountById =async (request,response)=>{
     try{
 
@@ -112,17 +110,18 @@ const findDiscountById =async (request,response)=>{
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
+
 const findAllDiscount =async (request,response)=>{
 
     try{
 
-        const {seachText,page=1,size=10}=request.query;
+        const {searchText,page=1,size=10}=request.query;
         const pageIndex=parseInt(page);
         const pageSize=parseInt(size);
 
         const query={};
-        if(seachText){
-            query.$text={$search:seachText}
+        if(searchText){
+            query.$text={$search:searchText}
         }
         const skip=(pageIndex-1)*pageSize;
         const discountList=await DiscountSchema.find(query)
@@ -136,9 +135,6 @@ const findAllDiscount =async (request,response)=>{
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
 
     }
-
-
-
 
 }
 

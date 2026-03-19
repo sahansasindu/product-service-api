@@ -1,26 +1,26 @@
-const mongoose=require('mongoose');
-const ReviewSchema=new mongoose.Schema({
-    orderId:{
-        type:Object
+const mongoose = require('mongoose');
+const ReviewSchema = new mongoose.Schema({
+    orderId: {
+        type: Object
 
     },
-    message :{
-        type:String
+    message: {
+        type: String
     },
-    createdDate:{
-        type:Date
+    createdDate: {
+        type: Date
     },
-    userId:{
-        type:Object
+    userId: {
+        type: Object
     },
-    displayName:{
-        type:String
+    displayName: {
+        type: String
     },
-    productId:{
-        type:Object
+    productId: {
+        type: Object
     },
-    rating:{
-        type:Object
+    rating: {
+        type: Number
     }
 });
-module.exports=mongoose.model('review',ReviewSchema);
+module.exports = mongoose.model('review', ReviewSchema);
