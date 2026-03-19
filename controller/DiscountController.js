@@ -1,7 +1,7 @@
-const DiscountSchema=require('../model/DiscountSchema');
-const createDiscount =async (request,response)=>{
+const DiscountSchema = require('../model/DiscountSchema');
+const createDiscount = async (request, response) => {
 
-    try{
+    try {
 
         const { discountName, discountPercentage, percentage, startDate, EndDate, LastUpdate, active } = request.body;
         const finalPercentage = percentage || discountPercentage;
@@ -22,18 +22,18 @@ const createDiscount =async (request,response)=>{
         console.log(saveData);
         return response.status(201).json({ code: 201, message: 'discount has been saved..', data: saveData });
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
 }
 
-const updateDiscount =async (request,response)=>{
+const updateDiscount = async (request, response) => {
 
-    try{
+    try {
 
         const { discountName, discountPercentage, percentage, startDate, EndDate, LastUpdate, active } = request.body;
-        
+
         const updateFields = {};
         if (discountName) updateFields.discountName = discountName;
         if (percentage || discountPercentage) updateFields.percentage = percentage || discountPercentage;
@@ -57,87 +57,87 @@ const updateDiscount =async (request,response)=>{
 
         return response.status(200).json({ code: 200, message: 'discount has been updated..', data: updateData });
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
 
 }
-const deleteDiscount =async (request,response)=>{
-    try{
+const deleteDiscount = async (request, response) => {
+    try {
 
-        if(!request.params.id){
+        if (!request.params.id) {
             return response.status(400).json({
-                code:400,
-                message:'some field are missing!....',
-                data:null
+                code: 400,
+                message: 'some field are missing!....',
+                data: null
             });
         }
-        const deletedData=await DiscountSchema.findOneAndDelete(
-            {'_id':request.params.id});
+        const deletedData = await DiscountSchema.findOneAndDelete(
+            { '_id': request.params.id });
 
-        if(deletedData){
-            return response.status(200).json({code:200,message:'discount has been deleted successfully',data:deletedData})
-        }else{
-            return response.status(404).json({code:404,message:'discount not found',data:null})
+        if (deletedData) {
+            return response.status(200).json({ code: 200, message: 'discount has been deleted successfully', data: deletedData })
+        } else {
+            return response.status(404).json({ code: 404, message: 'discount not found', data: null })
         }
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
 
-const findDiscountById =async (request,response)=>{
-    try{
+const findDiscountById = async (request, response) => {
+    try {
 
-        if(!request.params.id){
+        if (!request.params.id) {
             return response.status(400).json({
-                code:400,
-                message:'some field are missing!....',
-                data:null
+                code: 400,
+                message: 'some field are missing!....',
+                data: null
             });
         }
-        const discountData=await DiscountSchema.findById(
-            {'_id':request.params.id});
-        if(discountData){
-            return response.status(200).json({code:200,message:'discount data..',data:discountData})
+        const discountData = await DiscountSchema.findById(
+            { '_id': request.params.id });
+        if (discountData) {
+            return response.status(200).json({ code: 200, message: 'discount data..', data: discountData })
         }
 
         response.status(404).json({ code: 404, message: 'discount data not found...', error: err.message });
 
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
 
-const findAllDiscount =async (request,response)=>{
+const findAllDiscount = async (request, response) => {
 
-    try{
+    try {
 
-        const {searchText,page=1,size=10}=request.query;
-        const pageIndex=parseInt(page);
-        const pageSize=parseInt(size);
+        const { searchText, page = 1, size = 10 } = request.query;
+        const pageIndex = parseInt(page);
+        const pageSize = parseInt(size);
 
-        const query={};
-        if(searchText){
-            query.$text={$search:searchText}
+        const query = {};
+        if (searchText) {
+            query.$text = { $search: searchText }
         }
-        const skip=(pageIndex-1)*pageSize;
-        const discountList=await DiscountSchema.find(query)
+        const skip = (pageIndex - 1) * pageSize;
+        const discountList = await DiscountSchema.find(query)
             .limit(pageSize)
             .skip(skip);
-        const discountListCount=await DiscountSchema.countDocuments();
-        return response.status(200).json({code:200,message:'discount data..',data:{list:discountList,discountListCount}})
+        const discountListCount = await DiscountSchema.countDocuments();
+        return response.status(200).json({ code: 200, message: 'discount data..', data: { list: discountList, discountListCount } })
 
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
 
     }
 
 }
 
-module.exports={
-    createDiscount,updateDiscount,deleteDiscount, findDiscountById,findAllDiscount
+module.exports = {
+    createDiscount, updateDiscount, deleteDiscount, findDiscountById, findAllDiscount
 }

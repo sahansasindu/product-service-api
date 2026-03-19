@@ -149,10 +149,6 @@ const findAllProduct = async (request, response) => {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
 
     }
-
-
-
-
 }
 
 module.exports = {

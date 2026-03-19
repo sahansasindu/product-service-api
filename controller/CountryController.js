@@ -1,7 +1,7 @@
-const CountrySchema=require('../model/CountrySchema');
-const createCountry =async (request,response)=>{
+const CountrySchema = require('../model/CountrySchema');
+const createCountry = async (request, response) => {
 
-    try{
+    try {
 
         const { countryName, file, flag, countryCode } = request.body;
         const finalFlag = flag || file;
@@ -19,18 +19,14 @@ const createCountry =async (request,response)=>{
         console.log(saveData);
         return response.status(201).json({ code: 201, message: 'country has been saved..', data: saveData });
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
-
-
-
-
 }
-const updateCountry =async (request,response)=>{
+const updateCountry = async (request, response) => {
 
-    try{
+    try {
 
         const { countryName, countryCode, flag, file } = request.body;
         const finalFlag = flag || file;
@@ -55,88 +51,84 @@ const updateCountry =async (request,response)=>{
 
         return response.status(200).json({ code: 200, message: 'country has been updated..', data: updateData });
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 
 
 }
-const deleteCountry =async (request,response)=>{
-    try{
+const deleteCountry = async (request, response) => {
+    try {
 
-        if(!request.params.id){
+        if (!request.params.id) {
             return response.status(400).json({
-                code:400,
-                message:'some field are missing!....',
-                data:null
+                code: 400,
+                message: 'some field are missing!....',
+                data: null
             });
         }
-        const deletedData=await CountrySchema.findOneAndDelete(
-            {'_id':request.params.id});
+        const deletedData = await CountrySchema.findOneAndDelete(
+            { '_id': request.params.id });
 
-        if(deletedData){
-            return response.status(200).json({code:200,message:'country has been deleted successfully',data:deletedData})
-        }else{
-            return response.status(404).json({code:404,message:'country not found',data:null})
+        if (deletedData) {
+            return response.status(200).json({ code: 200, message: 'country has been deleted successfully', data: deletedData })
+        } else {
+            return response.status(404).json({ code: 404, message: 'country not found', data: null })
         }
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
-const findCountryById =async (request,response)=>{
-    try{
+const findCountryById = async (request, response) => {
+    try {
 
-        if(!request.params.id){
+        if (!request.params.id) {
             return response.status(400).json({
-                code:400,
-                message:'some field are missing!....',
-                data:null
+                code: 400,
+                message: 'some field are missing!....',
+                data: null
             });
         }
-        const countryData=await CountrySchema.findById(
-            {'_id':request.params.id});
-        if(countryData){
-            return response.status(200).json({code:200,message:'country data..',data:countryData})
+        const countryData = await CountrySchema.findById(
+            { '_id': request.params.id });
+        if (countryData) {
+            return response.status(200).json({ code: 200, message: 'country data..', data: countryData })
         }
 
         response.status(404).json({ code: 404, message: 'country data not found...', error: err.message });
 
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
     }
 }
-const findAllCountries =async (request,response)=>{
+const findAllCountries = async (request, response) => {
 
-    try{
+    try {
 
-        const {seachText,page=1,size=10}=request.query;
-        const pageIndex=parseInt(page);
-        const pageSize=parseInt(size);
+        const { seachText, page = 1, size = 10 } = request.query;
+        const pageIndex = parseInt(page);
+        const pageSize = parseInt(size);
 
-        const query={};
-        if(seachText){
-            query.$text={$search:seachText}
+        const query = {};
+        if (seachText) {
+            query.$text = { $search: seachText }
         }
-        const skip=(pageIndex-1)*pageSize;
-        const countryList=await CountrySchema.find(query)
+        const skip = (pageIndex - 1) * pageSize;
+        const countryList = await CountrySchema.find(query)
             .limit(pageSize)
             .skip(skip);
-        const countryListCount=await CountrySchema.countDocuments();
-        return response.status(200).json({code:200,message:'country data..',data:{list:countryList,countryListCount}})
+        const countryListCount = await CountrySchema.countDocuments();
+        return response.status(200).json({ code: 200, message: 'country data..', data: { list: countryList, countryListCount } })
 
 
-    }catch (err){
+    } catch (err) {
         response.status(500).json({ code: 500, message: 'Something went wrong...', error: err.message });
 
     }
-
-
-
-
 }
 
-module.exports={
-    createCountry,updateCountry,deleteCountry,findAllCountries,findCountryById
+module.exports = {
+    createCountry, updateCountry, deleteCountry, findAllCountries, findCountryById
 }
