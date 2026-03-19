@@ -15,7 +15,7 @@ It is built using **Express.js** and exposes RESTful APIs for handling:
 The service uses **MongoDB** as its database.
 
 ---
-E-Commerce System
+***E-Commerce System***
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/8cdca14d-77a1-4df4-85a5-5f2f1ffe3e50)
 
