@@ -44,6 +44,9 @@ Used as an **Identity and Access Management (IAM)** solution.
 - Handles authentication and authorization
 - Provides secure login and token-based access
 
+<img width="1659" height="757" alt="image" src="https://github.com/user-attachments/assets/99db1e65-ed52-4906-9dfd-f5d9328e9a3b" />
+
+
 ---
 
 ### Eureka Server (https://github.com/sahansasindu/eureka-service-api)
@@ -51,6 +54,9 @@ Used as a **Service Registry**.
 
 - Registers all microservices
 - Enables dynamic service discovery
+
+<img width="1657" height="903" alt="image" src="https://github.com/user-attachments/assets/145994dd-a0a2-4ef8-9790-bf14d0f6a704" />
+
 
 ---
 
