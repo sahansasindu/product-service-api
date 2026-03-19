@@ -21,22 +21,6 @@ E-Commerce System
 
 ---
 
-## Overview
-
-The **Product Service** is responsible for managing all product-related operations in the system.
-
-It is built using **Express.js** and exposes RESTful APIs for handling:
-- Products
-- Categories
-- Carts
-- Reviews
-- Discounts
-- Bookmarks
-
-The service uses **MongoDB** as its database.
-
----
-
 ## Features
 
 - Product management
