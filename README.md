@@ -1,11 +1,11 @@
-# 🛒 Product Service API
+# Product Service API
 E-Commerce System
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/8cdca14d-77a1-4df4-85a5-5f2f1ffe3e50)
 
 ---
 
-## 📌 Overview
+## Overview
 
 The **Product Service** is responsible for managing all product-related operations in the system.
 
@@ -21,11 +21,11 @@ The service uses **MongoDB** as its database.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 This project follows a **microservices architecture** with the following core components:
 
-### 🔐 Keycloak
+### Keycloak
 Used as an **Identity and Access Management (IAM)** solution.
 
 - Handles authentication and authorization
@@ -33,7 +33,7 @@ Used as an **Identity and Access Management (IAM)** solution.
 
 ---
 
-### 🔍 Eureka Server
+### Eureka Server
 Used as a **Service Registry**.
 
 - Registers all microservices
@@ -41,7 +41,7 @@ Used as a **Service Registry**.
 
 ---
 
-### 🚪 API Gateway
+### API Gateway
 Acts as the **entry point** for all client requests.
 
 - Routes requests to appropriate services
@@ -50,14 +50,14 @@ Acts as the **entry point** for all client requests.
 
 ---
 
-## 💻 Frontend Clients
+## Frontend Clients
 
 - **User Client (Angular)** → Used by normal users  
 - **Admin Client (React)** → Used by administrators  
 
 ---
 
-## ⚙️ Features
+## Features
 
 - Product management
 - Category management
@@ -68,13 +68,13 @@ Acts as the **entry point** for all client requests.
 
 ---
 
-## 🗄️ Database
+## Database
 
 - **MongoDB** → Used for storing product-related data
 
 ---
 
-## 📎 Notes
+## Notes
 
 - All APIs follow RESTful standards
 - Authentication is handled via Keycloak
