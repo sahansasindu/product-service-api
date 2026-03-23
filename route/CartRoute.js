@@ -3,15 +3,10 @@ const CartController=require('../controller/CartController');
 
 const router=express.Router();
 
-router.post('/create-category',CartController.createCartRecord);
-router.put('/update-category/:id',CartController.updateCart);
-router.delete('/delete-category/:id',CartController.deleteCart);
-router.get('/find-category-by-id/:id',CartController.findCartById);
-router.get('/find-all-categories',CartController.findAllCart);
-
-
-
-
-
+router.post('/create-cart',CartController.createCartRecord);
+router.put('/update-cart/:id',CartController.updateCart);
+router.delete('/delete-cart/:id',CartController.deleteCart);
+router.get('/find-cart-by-id/:id',CartController.findCartById);
+router.get('/find-all-carts',CartController.findAllCart);
 
 module.exports=router;
