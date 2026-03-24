@@ -1,9 +1,20 @@
 const ReviewSchema=require('../model/ReviewSchema');
+const jwt = require('jsonwebtoken');
 const createReview =async (request,response)=>{
 
     try{
 
-        const { orderId,message,createdDate,userId,displayName,productId,rating} = request.body;
+        const { orderId,message,createdDate,productId,rating} = request.body;
+        
+        const authHeader = request.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return response.status(401).json({ code: 401, message: 'Unauthorized: No token provided', data: null });
+        }
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.decode(token);
+        const userId = decoded?.sub;
+        const displayName = decoded?.name || decoded?.preferred_username || "Unknown User";
+
         if(!orderId || !message || !createdDate || !userId || !displayName || ! productId || !rating){
             return response.status(400).json({code:400,message:'some field are missing!....',data:null})
         }
