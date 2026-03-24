@@ -1,9 +1,20 @@
 const CartSchema = require('../model/CartSchema');
+const jwt = require('jsonwebtoken');
+
 const createCartRecord = async (request, response) => {
 
     try {
 
-        const { userId, productId, qty, createDate } = request.body;
+        const { productId, qty, createDate } = request.body;
+        
+        const authHeader = request.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return response.status(401).json({ code: 401, message: 'Unauthorized: No token provided', data: null });
+        }
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.decode(token);
+        const userId = decoded?.sub;
+
         if (!userId || !productId || !qty || !createDate) {
             return response.status(400).json({ code: 400, message: 'some field are missing!....', data: null })
         }
