@@ -74,7 +74,7 @@ app.use('/product-service-api/api/v1/countries', CountriesRoute);
 app.use('/product-service-api/api/v1/discount', DiscountRoute);
 app.use('/product-service-api/api/v1/product', ProductRoute);
 app.use('/product-service-api/api/v1/cart', CartRoute);
-app.use('/product-service-api/api/v1/boomark', BookmarkRoute);
+app.use('/product-service-api/api/v1/bookmark', BookmarkRoute);
 app.use('/product-service-api/api/v1/review', ReviewRoute);
 
 
